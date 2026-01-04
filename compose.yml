@@ -1,0 +1,10 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - PB_EMAIL=${PB_EMAIL}
+      - PB_PASSWORD=${PB_PASSWORD}
+    volumes:
+      - ./pb/pb_data:/app/pb_data
