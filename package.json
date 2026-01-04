@@ -14,13 +14,16 @@
 		"lint": "prettier --check . && eslint .",
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run && npm run test:e2e",
-		"test:e2e": "playwright test"
+		"test:e2e": "playwright test",
+		"build:gen-types": "npx pocketbase-typegen --db pb/pb_data/data.db --out src/lib/shared/pb/pocketbase-types.ts"
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.4.0",
 		"@eslint/js": "^9.39.1",
+		"@fontsource/space-mono": "^5.2.9",
 		"@playwright/test": "^1.57.0",
 		"@sveltejs/adapter-auto": "^7.0.0",
+		"@sveltejs/adapter-static": "^3.0.10",
 		"@sveltejs/kit": "^2.49.1",
 		"@sveltejs/vite-plugin-svelte": "^6.2.1",
 		"@tailwindcss/forms": "^0.5.10",
@@ -28,6 +31,7 @@
 		"@tailwindcss/vite": "^4.1.17",
 		"@types/node": "^22",
 		"@vitest/browser-playwright": "^4.0.15",
+		"daisyui": "^5.5.14",
 		"eslint": "^9.39.1",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.13.1",
@@ -46,6 +50,10 @@
 		"vitest-browser-svelte": "^2.0.1"
 	},
 	"dependencies": {
-		"@sveltejs/adapter-static": "^3.0.10"
+		"lucide-svelte": "^0.562.0",
+		"nanoid": "^5.1.6",
+		"pocketbase": "^0.26.5",
+		"stripe": "^20.1.0",
+		"zod": "^4.3.5"
 	}
 }
