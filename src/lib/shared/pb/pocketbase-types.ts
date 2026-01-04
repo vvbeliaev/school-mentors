@@ -101,16 +101,19 @@ export enum BookingsStatusOptions {
 	"expired" = "expired",
 }
 export type BookingsRecord<Tmeta = unknown> = {
+	agreedPriceCents?: number
 	created: IsoAutoDateString
 	id: string
 	mentee?: RecordIdString
 	meta?: null | Tmeta
 	slot?: RecordIdString
 	status: BookingsStatusOptions
+	stripePaymentIntent?: string
 	updated: IsoAutoDateString
 }
 
 export type SlotsRecord = {
+	booked?: boolean
 	created: IsoAutoDateString
 	durationMinutes?: number
 	id: string

@@ -11,6 +11,7 @@ import (
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
 
+	"school-mentors/bookings"
 	_ "school-mentors/migrations"
 )
 
@@ -29,6 +30,8 @@ func main() {
     migratecmd.MustRegister(app, app.RootCmd, migratecmd.Config{
         Automigrate: isGoRun,
     })
+
+	bookings.Hooks(app)
 
     if err := app.Start(); err != nil {
         log.Fatal(err)
