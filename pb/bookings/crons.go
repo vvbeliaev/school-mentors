@@ -18,7 +18,7 @@ func Crons(app *pocketbase.PocketBase) {
 		cutoffTime := time.Now().UTC().Add(-15 * time.Minute)
 		cutoffStr := cutoffTime.Format("2006-01-02 15:04:05.000Z")
 		
-		records, err := app.FindRecordsByFilter(collection, fmt.Sprintf("status = 'pending' AND created < '%s'", cutoffStr), "", 0, 0)
+		records, err := app.FindRecordsByFilter(collection, fmt.Sprintf("status = 'pending' && created < '%s'", cutoffStr), "", 0, 0)
 		if err != nil {
 			fmt.Println("Error querying old bookings:", err)
 			return
