@@ -6,7 +6,7 @@ WORKDIR /app
 RUN npm install -g pnpm
 
 COPY package.json pnpm-lock.yaml ./
-COPY svelte.config.js vite.config.js tsconfig.json ./
+COPY svelte.config.js vite.config.ts tsconfig.json ./
 
 COPY src ./src
 COPY static ./static
@@ -22,8 +22,7 @@ WORKDIR /app
 COPY pb/go.mod pb/go.sum ./
 RUN go mod download
 
-COPY pb/*.go ./
-COPY pb/migrations ./migrations
+COPY pb/ ./
 
 COPY --from=sveltekit-builder /app/build ./pb_public
 

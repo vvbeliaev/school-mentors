@@ -3,8 +3,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    ports:
+      - 8090:8090
     environment:
-      - PUBLIC_PB_URL=${PUBLIC_PB_URL:-http://mentorship.cogisoft.dev}
+      - PUBLIC_PB_URL=${PUBLIC_PB_URL:-http://localhost:8090}
       - PUBLIC_POSTHOG_URL=${PUBLIC_POSTHOG_URL:-https://eu.i.posthog.com}
       - PUBLIC_POSTHOG_TOKEN=${PUBLIC_POSTHOG_TOKEN:-pub}
 
@@ -12,5 +14,7 @@ services:
       - PB_PASSWORD=${PB_PASSWORD}
       - STRIPE_API_KEY=${STRIPE_API_KEY}
       - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+    env_file:
+      - .env
     volumes:
       - ./pb/pb_data:/app/pb_data
