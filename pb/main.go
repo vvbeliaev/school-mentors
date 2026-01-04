@@ -31,7 +31,9 @@ func main() {
         Automigrate: isGoRun,
     })
 
+	// Bookings
 	bookings.Hooks(app)
+	bookings.Crons(app)
 
     if err := app.Start(); err != nil {
         log.Fatal(err)

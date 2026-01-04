@@ -4,7 +4,12 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
+      - PUBLIC_PB_URL=${PB_URL:-http://mentorship.cogisoft.dev}
       - PB_EMAIL=${PB_EMAIL}
       - PB_PASSWORD=${PB_PASSWORD}
+      - STRIPE_API_KEY=${STRIPE_API_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      - PUBLIC_POSTHOG_URL=${PUBLIC_POSTHOG_URL:-https://eu.i.posthog.com}
+      - PUBLIC_POSTHOG_TOKEN=${PUBLIC_POSTHOG_TOKEN:-pub}
     volumes:
       - ./pb/pb_data:/app/pb_data

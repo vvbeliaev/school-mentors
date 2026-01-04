@@ -32,8 +32,9 @@ func Hooks(app *pocketbase.PocketBase) {
 		if err == nil {
 			currentRate := mentor.GetInt("hourRateCents")
 			e.Record.Set("agreedPriceCents", currentRate)
-			
 		}
+
+		e.Record.Set("status", "pending")
 
 		return e.Next()
 	})
