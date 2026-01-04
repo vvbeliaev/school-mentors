@@ -2,8 +2,6 @@ import { z } from 'zod';
 import { browser } from '$app/environment';
 
 const UIStateSchema = z.object({
-	paywallOpen: z.boolean().default(false),
-	authWallOpen: z.boolean().default(false),
 	sidebarOpen: z.boolean().default(false),
 	sidebarExpanded: z.boolean().default(true),
 	rightSidebarOpen: z.boolean().default(false),
@@ -19,8 +17,6 @@ class UIStore {
 	);
 
 	emailVerifyWallOpen = $derived(this._state?.emailVerifyWallOpen);
-	paywallOpen = $derived(this._state?.paywallOpen);
-	authWallOpen = $derived(this._state?.authWallOpen);
 	feedbackModalOpen = $derived(this._state?.feedbackModalOpen);
 
 	// Main sidebar (mobile drawer + desktop sidebar)
@@ -46,30 +42,6 @@ class UIStore {
 	setEmailVerifyWallOpen(open: boolean) {
 		if (!this._state) return;
 		this._state.emailVerifyWallOpen = open;
-		this.saveState();
-	}
-
-	// paywallOpen
-	togglePaywallOpen() {
-		if (!this._state) return;
-		this._state.paywallOpen = !this._state.paywallOpen;
-		this.saveState();
-	}
-	setPaywallOpen(open: boolean) {
-		if (!this._state) return;
-		this._state.paywallOpen = open;
-		this.saveState();
-	}
-
-	// authWallOpen
-	toggleAuthWallOpen() {
-		if (!this._state) return;
-		this._state.authWallOpen = !this._state.authWallOpen;
-		this.saveState();
-	}
-	setAuthWallOpen(open: boolean) {
-		if (!this._state) return;
-		this._state.authWallOpen = open;
 		this.saveState();
 	}
 
