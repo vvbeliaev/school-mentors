@@ -1,7 +1,8 @@
 <script lang="ts">
 	import posthog from 'posthog-js';
-	import { Heart, Plus, Settings, Menu, PanelRight } from 'lucide-svelte';
+	import { Heart, Plus, Settings, Menu, PanelRight, Search, Home } from 'lucide-svelte';
 	import { afterNavigate } from '$app/navigation';
+	import { page } from '$app/state';
 
 	import { userStore } from '$lib/apps/user';
 	import { Button, ThemeController, uiStore, Sidebar, swipeable } from '$lib';
@@ -150,31 +151,6 @@
 			onClose: () => uiStore.setSidebarOpen(false)
 		}}
 	>
-		<!-- Mobile Header -->
-		<header
-			class="flex h-12 shrink-0 items-center justify-between border-b border-base-300 px-2 md:hidden"
-		>
-			<Button
-				color="primary"
-				circle
-				size="sm"
-				onclick={() => uiStore.setSidebarOpen(true)}
-				variant="ghost"
-			>
-				<Menu class="size-6" />
-			</Button>
-
-			<Button
-				color="primary"
-				circle
-				size="sm"
-				onclick={() => uiStore.toggleRightSidebar()}
-				variant="ghost"
-			>
-				<PanelRight class="size-5" />
-			</Button>
-		</header>
-
 		<!-- Sidebar -->
 		<Sidebar
 			open={uiStore.sidebarOpen ?? false}
@@ -196,5 +172,29 @@
 				{@render children()}
 			</div>
 		</main>
+
+		<!-- Mobile Dock -->
+		<div class="dock dock-sm border-t border-base-300 md:hidden">
+			<a href="/app" class:dock-active={page.url.pathname === '/app'}>
+				<Home class="size-5" />
+				<span class="dock-label">Home</span>
+			</a>
+			<a href="/app" class:dock-active={false}>
+				<Search class="size-5" />
+				<span class="dock-label">Explore</span>
+			</a>
+			<a href="/app/profile" class:dock-active={page.url.pathname === '/app/profile'}>
+				<Settings class="size-5" />
+				<span class="dock-label">Profile</span>
+			</a>
+			<button class="hidden" onclick={() => uiStore.toggleRightSidebar()}>
+				<PanelRight class="size-5" />
+				<span class="dock-label">Panel</span>
+			</button>
+			<button class="hidden" onclick={() => uiStore.setSidebarOpen(true)}>
+				<Menu class="size-5" />
+				<span class="dock-label">Menu</span>
+			</button>
+		</div>
 	</div>
 {/await}

@@ -1,10 +1,14 @@
 <script lang="ts">
 	import { userStore } from '$lib/apps/user';
+	import { ThemeController } from '$lib';
 
 	const user = $derived(userStore.user);
 	const avatarUrl = $derived(userStore.avatarUrl);
 </script>
 
+<div class="absolute top-2 right-2 sm:hidden">
+	<ThemeController />
+</div>
 <div class="card bg-base-100 shadow-sm">
 	<div class="card-body">
 		<div class="flex items-center gap-4">

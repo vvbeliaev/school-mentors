@@ -16,7 +16,7 @@
 
 			<!-- Heart icon wrapper with animation -->
 			<div class="relative">
-				<span class="text-[5rem] font-bold text-primary">MVP</span>
+				<span class="text-[5rem] font-bold text-primary">Mentorship</span>
 			</div>
 		</div>
 
@@ -24,7 +24,7 @@
 		<h1
 			class="animate-fade-in-up mt-10 text-center text-4xl font-semibold text-base-content drop-shadow-sm"
 		>
-			Loading your app...
+			Loading app...
 		</h1>
 
 		<!-- Subtle loading dots with improved animation -->
