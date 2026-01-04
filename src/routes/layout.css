@@ -82,7 +82,7 @@
 	--color-base-content: oklch(90% 0.02 260); /* Светло-серый текст */
 
 	/* Primary: Vibrant Violet (Neon Glow) */
-	--color-primary: oklch(65% 0.22 270);
+	--color-primary: oklch(61% 0.22 270);
 	--color-primary-content: oklch(98% 0.02 270);
 
 	/* Secondary: Emerald */

@@ -4,6 +4,7 @@
 	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/state';
 
+	import { slotsStore } from '$lib/apps/slots';
 	import { userStore } from '$lib/apps/user';
 	import { Button, ThemeController, uiStore, Sidebar, swipeable, Logo } from '$lib';
 
@@ -31,8 +32,9 @@
 
 	// Global user load
 	$effect(() => {
-		globalPromise.then(({ user }) => {
+		globalPromise.then(({ user, slots }) => {
 			if (user) userStore.user = user;
+			if (slots) slotsStore.set(slots);
 		});
 	});
 
@@ -40,9 +42,11 @@
 	$effect(() => {
 		const userId = userStore.user?.id;
 		if (!userId) return;
-		userStore.subscribe(userId);
+		userStore.subscribe();
+		slotsStore.subscribe();
 		return () => {
 			userStore.unsubscribe();
+			slotsStore.unsubscribe();
 		};
 	});
 
@@ -71,10 +75,10 @@
 {/snippet}
 
 {#snippet sidebarFooter({ expanded }: { expanded: boolean })}
-	<div class="divider my-1"></div>
+	<!-- <div class="divider my-1"></div> -->
 
 	{#if user}
-		<div class="mb-2 flex justify-center px-2">
+		<div class="mb-1 flex justify-center px-2">
 			<!-- <button
 				class={['btn justify-start btn-ghost', expanded ? 'btn-block' : 'btn-square']}
 				onclick={() => uiStore.toggleFeedbackModal()}
@@ -89,7 +93,7 @@
 		</div>
 	{/if}
 
-	<div class={['mb-2 border-base-300', expanded ? 'px-2' : 'flex justify-center']}>
+	<div class={['mb-1 border-base-300', expanded ? 'px-2' : 'flex justify-center']}>
 		<ThemeController {expanded} navStyle />
 	</div>
 

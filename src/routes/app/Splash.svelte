@@ -16,7 +16,7 @@
 
 			<!-- Heart icon wrapper with animation -->
 			<div class="relative">
-				<span class="text-[5rem] font-bold text-primary">Mentorship</span>
+				<span class="text-[5rem] font-bold text-primary">Mentors.link</span>
 			</div>
 		</div>
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '$lib/shared/pb/pb-hook';
-	import favicon from '$lib/shared/assets/favicon.svg';
+	import favicon from '$lib/shared/assets/favicon_io/favicon.ico';
 	import { ThemeLoad } from '$lib';
 	import './layout.css';
 

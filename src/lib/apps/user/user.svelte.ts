@@ -1,28 +1,46 @@
 import type { AuthRecord } from 'pocketbase';
 
-import { pb, type UsersResponse } from '$lib';
+import { Collections, pb, type UserExpand, type UsersResponse } from '$lib';
+
+import type { UserTags } from './models';
 
 class UserStore {
-	user: UsersResponse<unknown> | null = $state(null);
+	private userId: string | null = null;
+
+	user: UsersResponse<UserTags, UserExpand> | null = $state(null);
 	token: string | null = $state(null);
 
 	avatarUrl = $derived(this.user?.avatar ? pb?.files.getURL(this.user, this.user.avatar) : null);
 
-	async subscribe(userId: string) {
-		return pb!.collection('users').subscribe(userId, (e) => {
+	set(user: UsersResponse<UserTags, UserExpand>) {
+		this.user = user;
+	}
+
+	async load() {
+		const res = await pb.collection(Collections.Users).authRefresh();
+		this.userId = res.record.id;
+		return res.record as UsersResponse<UserTags, UserExpand>;
+	}
+
+	async subscribe() {
+		if (!this.userId) return;
+
+		return pb.collection(Collections.Users).subscribe(this.userId, (e) => {
 			switch (e.action) {
 				case 'update':
-					pb!.authStore.save(pb!.authStore.token, e.record as AuthRecord);
+					pb.authStore.save(pb.authStore.token, e.record as AuthRecord);
 					break;
 				case 'delete':
-					pb!.authStore.clear();
+					pb.authStore.clear();
 					break;
 			}
 		});
 	}
 
 	unsubscribe() {
-		pb!.collection('users').unsubscribe();
+		if (!this.userId) return;
+
+		pb.collection(Collections.Users).unsubscribe(this.userId);
 	}
 }
 

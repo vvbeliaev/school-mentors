@@ -1,19 +1,21 @@
-import { pb, type UsersResponse, type UserExpand, Collections } from '$lib';
+import { slotsStore } from '$lib/apps/slots';
+import { pb, type UsersResponse, type UserExpand } from '$lib';
 
 import type { UserTags } from './models';
+import { userStore } from './user.svelte';
 
 export async function globalUserLoad() {
 	console.log('globalUserLoad', pb.authStore.isValid);
 	let user: UsersResponse<UserTags, UserExpand> | null = null;
 
 	try {
-		const res = await pb.collection(Collections.Users).authRefresh({ expand: 'slots_via_mentor' });
-		user = res.record as UsersResponse<UserTags, UserExpand>;
+		user = await userStore.load();
+		const slots = await slotsStore.load(user.id);
 
-		return { user };
+		return { user, slots };
 	} catch (error) {
 		console.error(error);
 		pb.authStore.clear();
-		return { user: null };
+		return { user: null, slots: [] };
 	}
 }

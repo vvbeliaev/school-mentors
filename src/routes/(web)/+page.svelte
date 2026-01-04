@@ -160,11 +160,6 @@
 				<div class="grid grid-cols-1 items-center gap-16 lg:grid-cols-12">
 					<!-- Left: Content -->
 					<div class="lg:col-span-7">
-						<div
-							class="mb-6 inline-flex items-center gap-2 rounded-full bg-secondary/10 px-4 py-1.5 text-sm font-bold tracking-wide text-secondary uppercase"
-						>
-							<Sparkles size={16} /> New: Verified University Mentors
-						</div>
 						<h1
 							class="font-display text-5xl leading-[1.05] font-black tracking-tighter sm:text-7xl lg:text-8xl"
 						>
@@ -179,9 +174,6 @@
 							<a href="/app/auth/sign-up" class="btn gap-3 px-10 btn-lg btn-primary">
 								Start your journey <ArrowRight size={20} />
 							</a>
-							<div class="flex items-center gap-2 px-2 text-sm font-medium opacity-60">
-								<CheckCircle size={16} class="text-success" /> 500+ Verified Mentors
-							</div>
 						</div>
 					</div>
 
@@ -340,7 +332,7 @@
 					there.
 				</p>
 				<div class="mt-12 flex flex-col gap-4 sm:flex-row">
-					<a href="/app/auth/sign-up" class="btn px-12 btn-lg btn-neutral">Sign up free</a>
+					<a href="/app/auth/sign-up" class="btn px-12 btn-lg">Sign up free</a>
 					<a href="/app/auth/sign-in" class="btn btn-ghost btn-lg">Log in</a>
 				</div>
 			</div>
