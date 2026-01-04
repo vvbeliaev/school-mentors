@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { Shield, Lock, Eye, Download } from 'lucide-svelte';
+
+	const currentYear = new Date().getFullYear();
+	const currentMonth = new Date().toLocaleString('default', { month: 'long' });
 </script>
 
 <div class="bg-base-100">
@@ -10,7 +13,7 @@
 					<Shield class="h-10 w-10 text-primary" />
 				</div>
 				<h1 class="mb-4 text-4xl font-bold text-base-content sm:text-5xl">Privacy Policy</h1>
-				<p class="text-xl text-base-content/70">Last updated: November 2025</p>
+				<p class="text-xl text-base-content/70">Last updated: {currentMonth} {currentYear}</p>
 			</div>
 		</div>
 	</section>
@@ -26,9 +29,9 @@
 						<h2 class="m-0 text-2xl font-bold">Your Privacy Matters</h2>
 					</div>
 					<p class="m-0 text-lg">
-						At cogitosoftware, we are committed to protecting your privacy and ensuring the security of
-						your personal data. This Privacy Policy explains how we collect, use, and safeguard your
-						information.
+						At cogitosoftware, we are committed to protecting your privacy and ensuring the security
+						of your personal data. This Privacy Policy explains how we collect, use, and safeguard
+						your information.
 					</p>
 				</div>
 

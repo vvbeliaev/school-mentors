@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { FileText, AlertCircle, CheckCircle, Scale } from 'lucide-svelte';
+
+	const currentYear = new Date().getFullYear();
+	const currentMonth = new Date().toLocaleString('default', { month: 'long' });
 </script>
 
 <div class="bg-base-100">
@@ -10,7 +13,7 @@
 					<FileText class="h-10 w-10 text-primary" />
 				</div>
 				<h1 class="mb-4 text-4xl font-bold text-base-content sm:text-5xl">Terms and Conditions</h1>
-				<p class="text-xl text-base-content/70">Last updated: November 2025</p>
+				<p class="text-xl text-base-content/70">Last updated: {currentMonth} {currentYear}</p>
 			</div>
 		</div>
 	</section>
@@ -26,14 +29,16 @@
 						<h2 class="m-0 text-2xl font-bold">Agreement to Terms</h2>
 					</div>
 					<p class="m-0 text-lg">
-						By accessing and using Cogito Software, you agree to be bound by these Terms and Conditions. If
-						you do not agree with any part of these terms, you may not use our service.
+						By accessing and using Cogito Software, you agree to be bound by these Terms and
+						Conditions. If you do not agree with any part of these terms, you may not use our
+						service.
 					</p>
 				</div>
 
 				<h2>Acceptable Use</h2>
 				<p>
-					You agree to use Cogito Software only for lawful purposes and in accordance with these Terms.
+					You agree to use Cogito Software only for lawful purposes and in accordance with these
+					Terms.
 				</p>
 				<p>You agree not to:</p>
 				<ul>
@@ -50,9 +55,9 @@
 						<h2 class="m-0 text-2xl font-bold">User Content</h2>
 					</div>
 					<p class="m-0 text-lg">
-						You retain all rights to the content you create on Cogito Software. You are solely responsible
-						for the content you create and ensure it complies with these Terms. We reserve the right
-						to remove content that violates our policies.
+						You retain all rights to the content you create on Cogito Software. You are solely
+						responsible for the content you create and ensure it complies with these Terms. We
+						reserve the right to remove content that violates our policies.
 					</p>
 				</div>
 
@@ -76,15 +81,16 @@
 						<h2 class="m-0 text-2xl font-bold">Limitation of Liability</h2>
 					</div>
 					<p class="m-0 text-lg">
-						To the maximum extent permitted by law, Cogito Software shall not be liable for any indirect,
-						incidental, special, or consequential damages arising from your use of the service.
+						To the maximum extent permitted by law, Cogito Software shall not be liable for any
+						indirect, incidental, special, or consequential damages arising from your use of the
+						service.
 					</p>
 				</div>
 
 				<h2>Intellectual Property</h2>
 				<p>
-					The Cogito Software platform, including its design, features, and functionality, is owned by us
-					and protected by intellectual property laws. You may not copy, modify, or create
+					The Cogito Software platform, including its design, features, and functionality, is owned
+					by us and protected by intellectual property laws. You may not copy, modify, or create
 					derivative works based on our platform without our express written permission.
 				</p>
 
