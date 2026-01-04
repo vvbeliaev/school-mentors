@@ -5,7 +5,7 @@
 	import { page } from '$app/state';
 
 	import { userStore } from '$lib/apps/user';
-	import { Button, ThemeController, uiStore, Sidebar, swipeable } from '$lib';
+	import { Button, ThemeController, uiStore, Sidebar, swipeable, Logo } from '$lib';
 
 	import Splash from './Splash.svelte';
 
@@ -54,8 +54,7 @@
 {#snippet sidebarHeader({ expanded }: { expanded: boolean })}
 	{#if expanded}
 		<a href="/app" class="flex items-center gap-2">
-			<Heart class="size-6 text-primary" />
-			<span class="font-semibold text-nowrap">Mentorship</span>
+			<Logo />
 		</a>
 	{/if}
 {/snippet}

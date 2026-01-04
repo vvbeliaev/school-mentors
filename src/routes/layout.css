@@ -93,7 +93,7 @@
 	--color-accent: oklch(70% 0.18 40);
 	--color-accent-content: oklch(15% 0.05 40);
 
-	--color-neutral: oklch(30% 0.05 260);
+	--color-neutral: oklch(60% 0.05 260);
 	--color-neutral-content: oklch(90% 0 0);
 
 	--radius-selector: 0.5rem;

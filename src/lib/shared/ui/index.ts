@@ -9,6 +9,8 @@ export { default as Button } from './Button.svelte';
 export { default as Sidebar } from './Sidebar.svelte';
 export { default as AuthWall } from './AuthWall.svelte';
 export { default as Paywall } from './Paywall.svelte';
+export { default as Logo } from './Logo.svelte';
+
 export { portal } from './portal';
 export { scrollToBottom } from './scroll-to-bottom';
 export { swipeable } from './swipeable';
