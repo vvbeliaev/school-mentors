@@ -1,9 +1,10 @@
 <script lang="ts">
 	import posthog from 'posthog-js';
-	import { Settings, Menu, PanelRight, Search, House } from 'lucide-svelte';
+	import { Settings, Menu, PanelRight, Search, House, CalendarDays } from 'lucide-svelte';
 	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/state';
 
+	import { bookingsStore } from '$lib/apps/bookings';
 	import { slotsStore } from '$lib/apps/slots';
 	import { userStore } from '$lib/apps/user';
 	import { Button, ThemeController, uiStore, Sidebar, swipeable, Logo } from '$lib';
@@ -12,7 +13,8 @@
 
 	const nav = [
 		{ label: 'Home', href: '/app', icon: House },
-		{ label: 'Mentors', href: '/app/mentors', icon: Search }
+		{ label: 'Mentors', href: '/app/mentors', icon: Search },
+		{ label: 'My Bookings', href: '/app/bookings', icon: CalendarDays }
 	];
 
 	let { children, data } = $props();
@@ -37,9 +39,10 @@
 
 	// Global user load
 	$effect(() => {
-		globalPromise.then(({ user, slots }) => {
+		globalPromise.then(({ user, slots, bookings }) => {
 			if (user) userStore.set(user);
 			if (slots) slotsStore.set(slots);
+			if (bookings) bookingsStore.set(bookings.items, bookings.totalItems);
 		});
 	});
 
@@ -49,9 +52,11 @@
 		if (!userId) return;
 		userStore.subscribe();
 		slotsStore.subscribe();
+		bookingsStore.subscribe();
 		return () => {
 			userStore.unsubscribe();
 			slotsStore.unsubscribe();
+			bookingsStore.unsubscribe();
 		};
 	});
 
@@ -186,8 +191,8 @@
 		</Sidebar>
 
 		<!-- Main Content -->
-		<main class="flex-1 overflow-hidden">
-			<div class="h-full max-w-[1440px]">
+		<main class="mb-12 flex-1 overflow-y-auto md:mb-0">
+			<div class="max-w-[1440px]">
 				{@render children()}
 			</div>
 		</main>

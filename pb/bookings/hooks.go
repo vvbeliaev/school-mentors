@@ -18,11 +18,11 @@ func Hooks(app *pocketbase.PocketBase) {
 			return fmt.Errorf("slot not found: %w", err)
 		}
 
-		if slot.GetBool("isBooked") {
+		if slot.GetBool("booked") {
 			return fmt.Errorf("slot is already booked: %s", slotId)
 		}
 		
-		slot.Set("isBooked", true)
+		slot.Set("booked", true)
 		if err := app.Save(slot); err != nil {
 			return err
 		}
@@ -46,7 +46,7 @@ func Hooks(app *pocketbase.PocketBase) {
 			slotId := e.Record.GetString("slot")
 			slot, err := app.FindRecordById("slots", slotId)
 			if err == nil {
-				slot.Set("isBooked", false)
+				slot.Set("booked", false)
 				app.Save(slot)
 			}
 		}

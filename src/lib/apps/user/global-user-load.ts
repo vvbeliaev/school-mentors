@@ -1,4 +1,5 @@
 import { slotsStore } from '$lib/apps/slots';
+import { bookingsStore } from '$lib/apps/bookings';
 import { pb, type UsersResponse, type UserExpand } from '$lib';
 
 import type { UserTags } from './models';
@@ -10,12 +11,15 @@ export async function globalUserLoad() {
 
 	try {
 		user = await userStore.load();
-		const slots = await slotsStore.load(user.id);
+		const [slots, bookings] = await Promise.all([
+			slotsStore.load(user.id),
+			bookingsStore.load(user.id)
+		]);
 
-		return { user, slots };
+		return { user, slots, bookings };
 	} catch (error) {
 		console.error(error);
 		pb.authStore.clear();
-		return { user: null, slots: [] };
+		return { user: null, slots: [], bookings: null };
 	}
 }

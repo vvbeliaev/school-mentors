@@ -44,7 +44,7 @@
 	}
 </script>
 
-<div class="absolute top-2 right-2 sm:hidden">
+<div class="absolute top-2 right-2 z-50 sm:hidden">
 	<ThemeController />
 </div>
 

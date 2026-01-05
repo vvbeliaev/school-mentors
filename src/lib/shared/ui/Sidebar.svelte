@@ -99,7 +99,7 @@
 	{/if}
 
 	<!-- Mobile Content -->
-	<nav class="flex flex-1 flex-col overflow-hidden">
+	<nav class="flex flex-1 flex-col overflow-y-auto">
 		{@render children({ expanded: true })}
 	</nav>
 
@@ -149,7 +149,7 @@
 		{/if}
 
 		<!-- Desktop Content -->
-		<nav class="flex flex-1 flex-col overflow-hidden">
+		<nav class="flex flex-1 flex-col overflow-y-auto">
 			{@render children({ expanded })}
 		</nav>
 

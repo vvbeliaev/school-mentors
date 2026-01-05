@@ -134,3 +134,23 @@ export const TAGS = [
 	'leadership',
 	'project management'
 ];
+
+export interface MentorFilters {
+	q?: string;
+	university?: string;
+	tags?: string[];
+	minPrice?: number;
+	maxPrice?: number;
+	sort?: string;
+}
+
+export type SortOption = {
+	label: string;
+	value: string;
+};
+
+export const SORT_OPTIONS: SortOption[] = [
+	{ label: 'Newest', value: '-created' },
+	{ label: 'Price: Low to High', value: 'hourRateCents' },
+	{ label: 'Price: High to Low', value: '-hourRateCents' }
+];

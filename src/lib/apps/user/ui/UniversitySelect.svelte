@@ -49,7 +49,12 @@
 	{/if}
 
 	<div class="relative w-full">
-		<div class={['input input-md flex w-full items-center gap-2', isFocused && 'input-primary']}>
+		<div
+			class={[
+				'input input-md flex w-full items-center gap-2',
+				isFocused && 'border-primary input-primary'
+			]}
+		>
 			<GraduationCap size={18} class="opacity-40" />
 			<input
 				type="text"
@@ -58,14 +63,14 @@
 				onfocus={() => (isFocused = true)}
 				onblur={handleBlur}
 				placeholder={placeholder || 'Search or enter university...'}
-				class="grow bg-transparent outline-none"
+				class="grow border-none bg-transparent outline-none focus:ring-0"
 				{required}
 			/>
 		</div>
 
 		{#if isFocused && (suggestions.length > 0 || searchQuery)}
 			<div
-				class="absolute top-full left-0 z-50 mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-base-200 bg-base-100 shadow-2xl"
+				class="absolute top-full left-0 z-[100] mt-1 max-h-60 w-full overflow-y-auto rounded-xl border border-base-200 bg-base-100 shadow-2xl"
 			>
 				<ul class="menu w-full menu-sm p-2">
 					{#if suggestions.length > 0}
