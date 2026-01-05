@@ -1,6 +1,15 @@
 <script lang="ts">
 	import posthog from 'posthog-js';
-	import { Heart, Plus, Settings, Menu, PanelRight, Search, Home } from 'lucide-svelte';
+	import {
+		Heart,
+		Plus,
+		Settings,
+		Menu,
+		PanelRight,
+		Search,
+		House,
+		SquareUser
+	} from 'lucide-svelte';
 	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/state';
 
@@ -9,6 +18,11 @@
 	import { Button, ThemeController, uiStore, Sidebar, swipeable, Logo } from '$lib';
 
 	import Splash from './Splash.svelte';
+
+	const nav = [
+		{ label: 'Home', href: '/app', icon: House },
+		{ label: 'Mentors', href: '/app/mentors', icon: Search }
+	];
 
 	let { children, data } = $props();
 	const globalPromise = $derived(data.globalPromise);
@@ -64,13 +78,24 @@
 {/snippet}
 
 {#snippet sidebarContent({ expanded }: { expanded: boolean })}
-	<div class="shrink-0 px-2 pt-4">
-		<!-- <Button block class="rounded-xl" disabled={loading} square={!expanded} onclick={handleNewChat}>
-			<Plus class="size-5" />
-			{#if expanded}
-				<span class="text-nowrap">New Chat</span>
-			{/if}
-		</Button> -->
+	<div class="shrink-0 space-y-1 px-2 pt-4">
+		{#each nav as item}
+			<Button
+				class={[expanded ? 'justify-start' : '']}
+				color={page.url.pathname === item.href ? 'primary' : 'neutral'}
+				variant="ghost"
+				block
+				square={!expanded}
+				href={item.href}
+			>
+				<item.icon class="size-5" />
+				{#if expanded}
+					<span class="text-nowrap">{item.label}</span>
+				{:else}
+					<span class="sr-only">{item.label}</span>
+				{/if}
+			</Button>
+		{/each}
 	</div>
 {/snippet}
 
@@ -179,7 +204,7 @@
 		<!-- Mobile Dock -->
 		<div class="dock dock-sm border-t border-base-300 md:hidden">
 			<a href="/app" class:dock-active={page.url.pathname === '/app'}>
-				<Home class="size-5" />
+				<House class="size-5" />
 				<span class="dock-label">Home</span>
 			</a>
 			<a href="/app" class:dock-active={false}>
