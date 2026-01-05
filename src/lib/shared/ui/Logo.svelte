@@ -8,7 +8,7 @@
 		text?: string;
 	}
 
-	const { size = 24, class: className = '', text = 'Mentors.link' }: Props = $props();
+	const { size = 24, class: className = '', text = 'College Connect' }: Props = $props();
 </script>
 
 <div class="flex size-9 items-center justify-center rounded-xl bg-primary text-white">

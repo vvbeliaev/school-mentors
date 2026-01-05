@@ -16,8 +16,8 @@ export default defineConfig({
 			registerType: 'autoUpdate',
 			includeAssets: ['favicon_io/favicon.ico', 'robots.txt', 'favicon_io/apple-touch-icon.png'],
 			manifest: {
-				name: 'Mentors.link',
-				short_name: 'Mentors.link',
+				name: 'College Connect',
+				short_name: 'colnect',
 				start_url: '/app',
 				scope: '/',
 				display: 'standalone',

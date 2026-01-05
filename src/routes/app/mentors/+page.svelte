@@ -13,16 +13,6 @@
 	// Local state for filters to keep UI responsive
 	let filters: MentorFilters = $derived({ ...data.filters });
 
-	// Sync local filters with URL changes (e.g. back button)
-	$effect(() => {
-		filters = { ...data.filters };
-	});
-
-	// Load data when data.filters changes (stable URL state)
-	$effect(() => {
-		mentorsStore.load(data.filters);
-	});
-
 	// Sync local filters with URL after a short delay
 	const debouncedUpdateUrl = debounce((newFilters: MentorFilters) => {
 		const params = new URLSearchParams();
