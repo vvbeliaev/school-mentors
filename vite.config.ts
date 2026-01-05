@@ -18,7 +18,7 @@ export default defineConfig({
 				name: 'Mentors.link',
 				short_name: 'Mentors.link',
 				start_url: '/app',
-				scope: '/app',
+				scope: '/',
 				display: 'standalone',
 				background_color: '#ffffff',
 				theme_color: '#0089d7',
