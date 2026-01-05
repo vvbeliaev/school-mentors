@@ -5,7 +5,7 @@
 	import { pb, Button } from '$lib';
 
 	import ProfileCard from './ProfileCard.svelte';
-
+	import MentorProfileForm from './MentorProfileForm.svelte';
 	import LegalCard from './LegalCard.svelte';
 
 	function logout() {
@@ -21,6 +21,8 @@
 
 	<div class="mx-auto max-w-xl space-y-4">
 		<ProfileCard />
+
+		<MentorProfileForm />
 
 		<LegalCard />
 

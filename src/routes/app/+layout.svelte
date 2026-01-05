@@ -1,15 +1,6 @@
 <script lang="ts">
 	import posthog from 'posthog-js';
-	import {
-		Heart,
-		Plus,
-		Settings,
-		Menu,
-		PanelRight,
-		Search,
-		House,
-		SquareUser
-	} from 'lucide-svelte';
+	import { Settings, Menu, PanelRight, Search, House } from 'lucide-svelte';
 	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/state';
 
@@ -47,7 +38,7 @@
 	// Global user load
 	$effect(() => {
 		globalPromise.then(({ user, slots }) => {
-			if (user) userStore.user = user;
+			if (user) userStore.set(user);
 			if (slots) slotsStore.set(slots);
 		});
 	});
@@ -88,7 +79,7 @@
 				square={!expanded}
 				href={item.href}
 			>
-				<item.icon class="size-5" />
+				<item.icon class={expanded ? 'size-5' : 'size-6'} />
 				{#if expanded}
 					<span class="text-nowrap">{item.label}</span>
 				{:else}
@@ -203,18 +194,18 @@
 
 		<!-- Mobile Dock -->
 		<div class="dock dock-sm border-t border-base-300 md:hidden">
-			<a href="/app" class:dock-active={page.url.pathname === '/app'}>
-				<House class="size-5" />
-				<span class="dock-label">Home</span>
-			</a>
-			<a href="/app" class:dock-active={false}>
-				<Search class="size-5" />
-				<span class="dock-label">Explore</span>
-			</a>
+			{#each nav as item}
+				<a href={item.href} class:dock-active={page.url.pathname === item.href}>
+					<item.icon class="size-5" />
+					<span class="dock-label">{item.label}</span>
+				</a>
+			{/each}
 			<a href="/app/profile" class:dock-active={page.url.pathname === '/app/profile'}>
 				<Settings class="size-5" />
 				<span class="dock-label">Profile</span>
 			</a>
+
+			<!-- Hidden for now -->
 			<button class="hidden" onclick={() => uiStore.toggleRightSidebar()}>
 				<PanelRight class="size-5" />
 				<span class="dock-label">Panel</span>
