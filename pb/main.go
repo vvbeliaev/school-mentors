@@ -31,6 +31,16 @@ func main() {
                 return nil
             }
 
+            // Try serve app
+            if strings.HasPrefix(path, "app/") {
+                rootPath := strings.TrimPrefix(path, "app/")
+                if rootPath != "" {
+                    if err := e.FileFS(fsys, rootPath); err == nil {
+                        return nil
+                    }
+                }
+            }
+
             // 2. Try to serve path.html (for prerendered routes)
             if path != "" && !strings.Contains(path, ".") {
                 htmlErr := e.FileFS(fsys, strings.TrimSuffix(path, "/")+".html")

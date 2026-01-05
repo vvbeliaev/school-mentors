@@ -8,7 +8,6 @@ export default defineConfig({
 	plugins: [
 		tailwindcss(),
 		sveltekit(),
-		//@ts-expect-error - SvelteKitPWA is not typed
 		SvelteKitPWA({
 			injectRegister: 'auto',
 			strategies: 'generateSW',
