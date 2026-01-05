@@ -32,6 +32,7 @@ class SlotsStore {
 			'*',
 			(e) => {
 				const slot = e.record as SlotsResponse;
+				console.log(slot);
 				switch (e.action) {
 					case 'create':
 						this.slots.unshift(slot);
@@ -45,8 +46,8 @@ class SlotsStore {
 				}
 			},
 			{
-				filter: `mentor = "${this.userId}"`
-				// expand: 'bookings_via_slot'
+				filter: `mentor = "${this.userId}"`,
+				expand: 'bookings_via_slot'
 			}
 		);
 	}

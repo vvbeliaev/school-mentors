@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { goto, invalidate } from '$app/navigation';
 	import { pb } from '$lib';
 
 	interface Props {
@@ -42,10 +42,8 @@
 				}
 			});
 
-			localStorage.removeItem('guest_id');
-			localStorage.removeItem('guest_password');
-
 			await goto('/app');
+			await invalidate('app:global');
 		} catch (e: any) {
 			console.error('Error during OAuth2 flow:', e);
 			error = e;

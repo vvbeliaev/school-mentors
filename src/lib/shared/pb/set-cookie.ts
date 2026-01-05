@@ -4,8 +4,8 @@ const DOMAIN = 'cogisoft.dev';
 
 export function setPBCookie() {
 	const host = typeof window !== 'undefined' ? window.location.hostname : '';
-	const isStory = host.endsWith(DOMAIN);
-	const domainAttr = isStory ? `Domain=.${DOMAIN}` : undefined;
+	const isDomain = host.endsWith(DOMAIN);
+	const domainAttr = isDomain ? `Domain=.${DOMAIN}` : undefined;
 	const maxAge = 100 * 24 * 60 * 60;
 
 	document.cookie = [
@@ -23,7 +23,7 @@ export function setPBCookie() {
 		httpOnly: false,
 		secure: true,
 		sameSite: 'Lax',
-		domain: isStory ? `.${DOMAIN}` : undefined,
+		domain: isDomain ? `.${DOMAIN}` : undefined,
 		path: '/'
 	});
 }
