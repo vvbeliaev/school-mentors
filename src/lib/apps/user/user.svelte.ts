@@ -42,6 +42,12 @@ class UserStore {
 
 		pb.collection(Collections.Users).unsubscribe(this.userId);
 	}
+
+	clear() {
+		this.userId = null;
+		this.user = null;
+		this.token = null;
+	}
 }
 
 export const userStore = new UserStore();

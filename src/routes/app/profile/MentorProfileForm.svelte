@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { GraduationCap, DollarSign, Tag, Info, Pencil } from 'lucide-svelte';
 
-	import { userStore, userApi, TagInput } from '$lib/apps/user';
+	import { userStore, userApi, TagInput, UniversitySelect } from '$lib/apps/user';
 	import { Modal, Button, Input, Textarea } from '$lib';
 
 	const user = $derived(userStore.user);
@@ -136,9 +136,10 @@
 					<Info size={14} /> Academic Details
 				</h3>
 				<div class="grid gap-4 sm:grid-cols-2">
-					<Input
+					<UniversitySelect
 						label="University"
 						bind:value={university}
+						onchange={(val) => (university = val)}
 						placeholder="e.g. Stanford University"
 						required
 					/>

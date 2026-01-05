@@ -54,13 +54,8 @@
 
 	<div class="space-y-3">
 		<div class="relative w-full">
-			<div
-				class={[
-					'flex items-center gap-2 rounded-lg border bg-base-100 px-3 py-2 transition-all focus-within:ring-2 focus-within:ring-primary/20',
-					isFocused ? 'border-primary shadow-sm' : 'border-base-content/20'
-				]}
-			>
-				<Search size={18} class="text-base-content/40" />
+			<div class={['input input-md flex w-full items-center gap-2', isFocused && 'input-primary']}>
+				<Search size={18} class="opacity-40" />
 				<input
 					type="text"
 					bind:value={searchQuery}
@@ -68,7 +63,7 @@
 					onblur={() => setTimeout(() => (isFocused = false), 200)}
 					onkeydown={handleKeydown}
 					placeholder={label || 'Search or add tags...'}
-					class="w-full bg-transparent text-sm outline-none"
+					class="grow bg-transparent outline-none"
 				/>
 			</div>
 
@@ -115,9 +110,9 @@
 				<div class="flex flex-wrap gap-2">
 					{#each selectedTags as tag}
 						<span
-							class="badge flex items-center gap-1.5 px-3 py-4 badge-md transition-all badge-primary hover:scale-105"
+							class="badge flex items-center gap-1.5 badge-outline px-3 py-4 font-medium transition-all badge-secondary hover:scale-105"
 						>
-							<span class="text-sm font-medium">{tag}</span>
+							<span class="text-sm">{tag}</span>
 							<button
 								type="button"
 								class="rounded-full p-0.5 transition-colors hover:bg-black/10"

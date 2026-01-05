@@ -23,6 +23,7 @@ class SlotsStore {
 		});
 
 		this.userId = userId;
+		console.log(mentorSlots, menteeSlots);
 		return [...mentorSlots, ...menteeSlots];
 	}
 
@@ -44,14 +45,13 @@ class SlotsStore {
 				}
 			},
 			{
-				filter: `mentor = "${this.userId}" || bookings_via_slot.mentee = "${this.userId}"`,
-				expand: 'bookings_via_slot'
+				filter: `mentor = "${this.userId}"`
+				// expand: 'bookings_via_slot'
 			}
 		);
 	}
 
 	unsubscribe() {
-		this.clear();
 		pb.collection(Collections.Slots).unsubscribe();
 	}
 

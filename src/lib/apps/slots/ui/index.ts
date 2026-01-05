@@ -1,1 +1,1 @@
-export { default as Shedule } from './Shedule.svelte';
+export { default as Schedule } from './Schedule.svelte';

@@ -68,7 +68,7 @@
 				</div>
 
 				<button
-					class="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 transition-opacity group-hover:opacity-100 disabled:opacity-50"
+					class="absolute inset-0 flex cursor-pointer items-center justify-center rounded-full bg-black/40 opacity-0 transition-opacity group-hover:opacity-100 disabled:opacity-50"
 					onclick={() => fileInput?.click()}
 					disabled={isUploadingAvatar}
 				>
