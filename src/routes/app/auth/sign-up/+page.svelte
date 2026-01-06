@@ -3,7 +3,7 @@
 	import posthog from 'posthog-js';
 	import { AlertCircle } from 'lucide-svelte';
 
-	import { pb, ThemeController } from '$lib';
+	import { pb, Collections, ThemeController } from '$lib';
 
 	import Oauth from '../Oauth.svelte';
 
@@ -35,7 +35,7 @@
 		}
 
 		try {
-			await pb!.collection('users').create({
+			await pb.collection(Collections.Users).create({
 				email,
 				password,
 				passwordConfirm,

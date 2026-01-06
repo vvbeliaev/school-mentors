@@ -10,7 +10,7 @@ export default defineConfig({
 		sveltekit(),
 		SvelteKitPWA({
 			base: '/',
-			injectRegister: 'auto',
+			injectRegister: false,
 			strategies: 'generateSW',
 			srcDir: 'src',
 			registerType: 'autoUpdate',

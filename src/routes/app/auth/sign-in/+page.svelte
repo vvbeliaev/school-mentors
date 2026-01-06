@@ -3,7 +3,7 @@
 	import { goto, invalidate } from '$app/navigation';
 	import { AlertCircle } from 'lucide-svelte';
 
-	import { pb, ThemeController } from '$lib';
+	import { pb, Collections, ThemeController } from '$lib';
 
 	import Oauth from '../Oauth.svelte';
 
@@ -21,7 +21,7 @@
 		loading = true;
 
 		try {
-			const res = await pb!.collection('users').authWithPassword(email, password, {
+			const res = await pb.collection(Collections.Users).authWithPassword(email, password, {
 				expand: ''
 			});
 			posthog.capture('signed_in', {
