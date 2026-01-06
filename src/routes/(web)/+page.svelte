@@ -81,6 +81,14 @@
 	];
 </script>
 
+<svelte:head>
+	<title>University Connect</title>
+	<meta
+		name="description"
+		content="Connect with top college students for personalized 1-on-1 coaching. Get the inside track from those who just did it."
+	/>
+</svelte:head>
+
 <div class="min-h-screen bg-base-100">
 	<!-- Sticky Header -->
 	<header

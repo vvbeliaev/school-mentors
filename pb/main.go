@@ -52,7 +52,7 @@ func main() {
                 return e.FileFS(fsys, "index.html")
             }
 
-            return err
+            return se.Next()
         })
 
         // API routes are registered separately, they have priority

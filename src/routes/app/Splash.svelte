@@ -16,7 +16,7 @@
 
 			<!-- Heart icon wrapper with animation -->
 			<div class="relative">
-				<span class="text-[5rem] font-bold text-primary"> University Connect</span>
+				<span class="text-center text-[5rem] font-bold text-primary"> University Connect</span>
 			</div>
 		</div>
 
