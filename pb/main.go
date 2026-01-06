@@ -23,6 +23,8 @@ func main() {
 	app := pocketbase.New()
 
     app.OnServe().BindFunc(func(se *core.ServeEvent) error {
+        // se.Router.GET("/{path...}", apis.Static(os.DirFS("./pb_public"), false))
+        
         se.Router.GET("/{path...}", func(e *core.RequestEvent) error {
             path := e.Request.PathValue("path")
             fsys := os.DirFS("./pb_public")
@@ -52,7 +54,7 @@ func main() {
                 return e.FileFS(fsys, "index.html")
             }
 
-            return se.Next()
+            return nil
         })
 
         // API routes are registered separately, they have priority
