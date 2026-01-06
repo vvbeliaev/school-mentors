@@ -13,4 +13,6 @@
 	let { children } = $props();
 </script>
 
-{@render children()}
+<div class="mx-auto w-full max-w-7xl space-y-4 overflow-y-auto pb-6 sm:pb-0">
+	{@render children()}
+</div>

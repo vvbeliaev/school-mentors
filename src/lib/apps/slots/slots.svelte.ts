@@ -1,23 +1,33 @@
-import { pb, Collections, type SlotsResponse } from '$lib';
+import { pb, Collections, type SlotsResponse, type SlotExpand } from '$lib';
+
+type EnhancedSlot = SlotsResponse<SlotExpand>;
 
 class SlotsStore {
 	private userId: string | null = null;
 
-	private slots: SlotsResponse[] = $state([]);
+	private slots: EnhancedSlot[] = $state([]);
 
 	mentorSlots = $derived(this.slots.filter((s) => s.mentor === this.userId));
 	menteeSlots = $derived(this.slots.filter((s) => s.mentor !== this.userId));
 
-	set(slots: SlotsResponse[]) {
+	set(slots: EnhancedSlot[]) {
 		this.slots = slots;
+	}
+
+	async loadMentorSlots(userId: string) {
+		const slots = await pb.collection(Collections.Slots).getFullList<EnhancedSlot>({
+			filter: `mentor = "${userId}" && booked = false && start >= "${new Date().toISOString()}"`,
+			sort: 'start'
+		});
+		return slots;
 	}
 
 	async load(userId: string) {
 		const mentorSlots = await pb
 			.collection(Collections.Slots)
-			.getFullList({ filter: `mentor = "${userId}"` });
+			.getFullList<EnhancedSlot>({ filter: `mentor = "${userId}"`, expand: 'bookings_via_slot' });
 
-		const menteeSlots = await pb.collection(Collections.Slots).getFullList({
+		const menteeSlots = await pb.collection(Collections.Slots).getFullList<EnhancedSlot>({
 			filter: `bookings_via_slot.mentee = "${userId}"`,
 			expand: 'bookings_via_slot'
 		});
@@ -31,7 +41,7 @@ class SlotsStore {
 		return pb.collection(Collections.Slots).subscribe(
 			'*',
 			(e) => {
-				const slot = e.record as SlotsResponse;
+				const slot = e.record as EnhancedSlot;
 				console.log(slot);
 				switch (e.action) {
 					case 'create':

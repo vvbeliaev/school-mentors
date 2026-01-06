@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { pb } from '$lib';
 	import {
 		CheckCircle,
 		Calendar,
@@ -12,18 +11,20 @@
 		XCircle,
 		CreditCard
 	} from 'lucide-svelte';
-	import { Button } from '$lib/shared/ui';
 	import { onMount } from 'svelte';
+	import { page } from '$app/state';
 
-	let { data } = $props();
-	const booking = $derived(data.booking);
-	const mentor = $derived(booking.expand?.slot?.expand?.mentor);
+	import { pb, Button } from '$lib';
+	import { bookingsStore } from '$lib/apps/bookings';
+
+	const booking = $derived(bookingsStore.bookings.find((b) => b.id === page.params.bookingId));
+	const mentor = $derived(booking?.expand?.slot?.expand?.mentor);
 
 	let timeLeft = $state('');
 	let isExpired = $state(false);
 
 	function updateTimer() {
-		const created = new Date(booking.created).getTime();
+		const created = new Date(booking?.created ?? '').getTime();
 		const expires = created + 15 * 60 * 1000;
 		const now = new Date().getTime();
 		const diff = expires - now;
@@ -40,7 +41,7 @@
 	}
 
 	onMount(() => {
-		if (booking.status === 'pending') {
+		if (booking?.status === 'pending') {
 			updateTimer();
 			const interval = setInterval(() => {
 				updateTimer();
@@ -58,54 +59,45 @@
 		};
 	}
 
-	const dt = $derived(formatDateTime(booking.expand?.slot?.start));
+	const dt = $derived(formatDateTime(booking?.expand?.slot?.start ?? ''));
 
-	const statusConfig: Record<
-		string,
-		{
-			title: string;
-			description: string;
-			icon: typeof Timer;
-			colorClass: string;
-			bgClass: string;
-			ringClass: string;
+	const statusConfigs = $derived({
+		pending: {
+			title: 'Finish Your Booking',
+			description:
+				'This slot is reserved for you for the next 15 minutes. Please complete the payment to confirm your session.',
+			icon: Timer,
+			colorClass: 'text-warning',
+			bgClass: 'bg-warning/10',
+			ringClass: 'ring-warning/5'
+		},
+		confirmed: {
+			title: 'Booking Confirmed!',
+			description: `Your session with ${mentor?.name} is successfully scheduled.`,
+			icon: CheckCircle,
+			colorClass: 'text-success',
+			bgClass: 'bg-success/10',
+			ringClass: 'ring-success/5'
+		},
+		expired: {
+			title: 'Booking Expired',
+			description: 'The 15-minute reservation period has ended. The slot has been released.',
+			icon: AlertCircle,
+			colorClass: 'text-base-content/40',
+			bgClass: 'bg-base-200',
+			ringClass: 'ring-base-100'
+		},
+		canceled: {
+			title: 'Booking Canceled',
+			description: 'This booking has been canceled.',
+			icon: XCircle,
+			colorClass: 'text-error',
+			bgClass: 'bg-error/10',
+			ringClass: 'ring-error/5'
 		}
-	> = $derived(
-		{
-			pending: {
-				title: 'Finish Your Booking',
-				description:
-					'This slot is reserved for you for the next 15 minutes. Please complete the payment to confirm your session.',
-				icon: Timer,
-				colorClass: 'text-warning',
-				bgClass: 'bg-warning/10',
-				ringClass: 'ring-warning/5'
-			},
-			confirmed: {
-				title: 'Booking Confirmed!',
-				description: `Your session with ${mentor?.name} is successfully scheduled.`,
-				icon: CheckCircle,
-				colorClass: 'text-success',
-				bgClass: 'bg-success/10',
-				ringClass: 'ring-success/5'
-			},
-			expired: {
-				title: 'Booking Expired',
-				description: 'The 15-minute reservation period has ended. The slot has been released.',
-				icon: AlertCircle,
-				colorClass: 'text-base-content/40',
-				bgClass: 'bg-base-200',
-				ringClass: 'ring-base-100'
-			},
-			canceled: {
-				title: 'Booking Canceled',
-				description: 'This booking has been canceled.',
-				icon: XCircle,
-				colorClass: 'text-error',
-				bgClass: 'bg-error/10',
-				ringClass: 'ring-error/5'
-			}
-		}[booking.status as keyof typeof statusConfig] || (statusConfig.pending as any)
+	});
+	const statusConfig = $derived(
+		statusConfigs[booking?.status as keyof typeof statusConfigs] ?? statusConfigs.pending
 	);
 </script>
 
@@ -123,7 +115,7 @@
 		{statusConfig.description}
 	</p>
 
-	{#if booking.status === 'pending' && !isExpired}
+	{#if booking?.status === 'pending' && !isExpired}
 		<div class="mt-6 flex justify-center">
 			<div
 				class="flex items-center gap-3 rounded-2xl bg-warning/10 px-6 py-3 font-mono text-2xl font-black text-warning"
@@ -148,7 +140,9 @@
 					<Clock size={14} />
 					Time
 				</div>
-				<div class="text-xl font-bold">{dt.time} ({booking.expand?.slot?.durationMinutes} min)</div>
+				<div class="text-xl font-bold">
+					{dt.time} ({booking?.expand?.slot?.durationMinutes} min)
+				</div>
 			</div>
 		</div>
 
@@ -175,20 +169,20 @@
 			<div class="mt-4 flex-1 text-center md:mt-0 md:text-right">
 				<div class="text-sm font-medium opacity-40">Amount</div>
 				<div class="font-mono text-xl font-bold">
-					${(booking.agreedPriceCents / 100).toFixed(2)}
+					${(booking?.agreedPriceCents ?? 0 / 100).toFixed(2)}
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<div class="mt-12 flex flex-col gap-4 sm:flex-row sm:justify-center">
-		{#if booking.status === 'pending' && !isExpired}
+		{#if booking?.status === 'pending' && !isExpired}
 			<Button color="primary" size="lg" class="gap-2 px-12">
 				<CreditCard size={20} />
 				Checkout
 			</Button>
 			<Button variant="ghost" size="lg" href="/app/bookings">Cancel</Button>
-		{:else if booking.status === 'confirmed'}
+		{:else if booking?.status === 'confirmed'}
 			<Button href="/app/mentors" variant="outline" size="lg">Browse more mentors</Button>
 			<Button href="/app/bookings" color="primary" size="lg" class="gap-2">
 				Go to My Bookings
@@ -200,7 +194,7 @@
 		{/if}
 	</div>
 
-	{#if booking.status === 'confirmed'}
+	{#if booking?.status === 'confirmed'}
 		<div class="mt-12 rounded-2xl bg-primary/5 p-6 text-sm opacity-70">
 			<div class="mb-2 flex items-center justify-center gap-2 font-bold text-primary">
 				<Video size={16} />

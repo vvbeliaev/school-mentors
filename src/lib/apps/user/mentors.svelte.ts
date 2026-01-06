@@ -3,7 +3,7 @@ import type { MentorFilters, UserTags } from './models';
 
 const PAGE_SIZE = 20;
 
-export type MentorResponse = UsersResponse<UserTags> & {
+export type EnhancedMentor = UsersResponse<UserTags> & {
 	rating?: number; // Mock rating for now as it's not in the schema yet
 };
 
@@ -14,13 +14,13 @@ class MentorsStore {
 	loading = $state(true);
 	isFallback = $state(false);
 
-	private _mentors: MentorResponse[] = $state([]);
+	private _mentors: EnhancedMentor[] = $state([]);
 	private userId: string | null = null;
 	private currentFilters: MentorFilters = {};
 
 	mentors = $derived(this._mentors);
 
-	set(mentors: MentorResponse[], page: number, totalPages: number, totalItems: number) {
+	set(mentors: EnhancedMentor[], page: number, totalPages: number, totalItems: number) {
 		this.loading = false;
 		this._mentors = mentors.map((m) => ({
 			...m,
@@ -29,6 +29,18 @@ class MentorsStore {
 		this.page = page;
 		this.totalPages = totalPages;
 		this.totalItems = totalItems;
+	}
+
+	async add(mentor: EnhancedMentor) {
+		this._mentors.push(mentor);
+	}
+
+	async getOne(id: string) {
+		const mentor = await pb.collection(Collections.Users).getOne<EnhancedMentor>(id);
+		return {
+			...mentor,
+			rating: 4.5
+		};
 	}
 
 	async load(filters: MentorFilters = {}) {
@@ -40,7 +52,7 @@ class MentorsStore {
 		const sort = filters.sort || '-created';
 
 		try {
-			let res = await pb.collection(Collections.Users).getList<MentorResponse>(1, PAGE_SIZE, {
+			let res = await pb.collection(Collections.Users).getList<EnhancedMentor>(1, PAGE_SIZE, {
 				filter: filterQuery,
 				sort: sort,
 				requestKey: JSON.stringify(filters)
@@ -56,7 +68,7 @@ class MentorsStore {
 
 			if (res.items.length === 0 && hasFilters) {
 				this.isFallback = true;
-				res = await pb.collection(Collections.Users).getList<MentorResponse>(1, PAGE_SIZE, {
+				res = await pb.collection(Collections.Users).getList<EnhancedMentor>(1, PAGE_SIZE, {
 					filter: 'isMentor = true && isVerified = true',
 					sort: '-created'
 				});
@@ -108,7 +120,7 @@ class MentorsStore {
 
 		const res = await pb
 			.collection(Collections.Users)
-			.getList<MentorResponse>(this.page + 1, PAGE_SIZE, {
+			.getList<EnhancedMentor>(this.page + 1, PAGE_SIZE, {
 				filter: filterQuery,
 				sort: sort
 			});

@@ -1,23 +1,19 @@
-import { pb, Collections } from '$lib';
-import type { UsersResponse, SlotsResponse } from '$lib/shared/pb/pocketbase-types';
 import { error } from '@sveltejs/kit';
+
+import { mentorsStore } from '$lib/apps/user';
+import { slotsStore } from '$lib/apps/slots';
 
 export async function load({ params }) {
 	const mentorId = params.mentorId;
 
 	try {
-		const mentor = await pb.collection(Collections.Users).getOne<UsersResponse>(mentorId);
+		const mentor = await mentorsStore.getOne(mentorId);
 
-		// Only show the page if the user is actually a mentor
 		if (!mentor.isMentor) {
 			throw error(404, 'Mentor not found');
 		}
 
-		// Load available slots (not booked and in the future)
-		const slots = await pb.collection(Collections.Slots).getFullList<SlotsResponse>({
-			filter: `mentor = "${mentorId}" && booked = false && start >= "${new Date().toISOString()}"`,
-			sort: 'start'
-		});
+		const slots = await slotsStore.loadMentorSlots(mentorId);
 
 		return {
 			mentor,

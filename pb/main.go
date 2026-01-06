@@ -9,6 +9,7 @@ import (
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
+	"github.com/stripe/stripe-go/v84"
 
 	"school-mentors/bookings"
 	_ "school-mentors/migrations"
@@ -16,6 +17,8 @@ import (
 
 func main() {
 	godotenv.Load("../.env")
+
+    stripe.Key = os.Getenv("STRIPE_API_KEY")
 
 	app := pocketbase.New()
 
@@ -48,6 +51,9 @@ func main() {
             return err
         })
 
+        // Register custom API routes
+        bookings.API(se, app)
+
         return se.Next()
     })
 
@@ -64,3 +70,4 @@ func main() {
         log.Fatal(err)
     }
 }
+

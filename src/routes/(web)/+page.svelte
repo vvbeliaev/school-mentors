@@ -354,7 +354,7 @@
 				<a href="/" class="hidden transition-opacity hover:opacity-100">Twitter</a>
 			</div>
 
-			<div class="text-sm opacity-30">© 2026 College Connect</div>
+			<div class="text-sm opacity-30">© 2026 University Connect</div>
 		</div>
 	</footer>
 </div>

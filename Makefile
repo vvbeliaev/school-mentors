@@ -3,3 +3,6 @@ pre:
 
 up:
 	docker compose -f compose.local.yml up -d
+
+stripe:
+	stripe listen --forward-to localhost:8090/api/bookings/webhook

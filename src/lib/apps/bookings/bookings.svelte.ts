@@ -1,9 +1,13 @@
-import { pb, Collections, type BookingsResponse } from '$lib';
+import { pb, Collections, type BookingsResponse, type BookingsExpand } from '$lib';
+
+import type { BookingMeta } from './models';
+
+type EnhancedBooking = BookingsResponse<BookingMeta, BookingsExpand>;
 
 class BookingsStore {
 	private userId: string | null = null;
 
-	bookings: BookingsResponse[] = $state([]);
+	bookings: EnhancedBooking[] = $state([]);
 
 	mentorBookings = $derived(this.bookings.filter((b) => b.expand?.slot?.mentor === this.userId));
 	menteeBookings = $derived(this.bookings.filter((b) => b.mentee === this.userId));
@@ -12,7 +16,7 @@ class BookingsStore {
 	perPage: number = $state(20);
 	totalItems: number = $state(0);
 
-	set(bookings: BookingsResponse[], totalItems: number) {
+	set(bookings: EnhancedBooking[], totalItems: number) {
 		this.bookings = bookings;
 		this.totalItems = totalItems;
 	}
@@ -21,13 +25,15 @@ class BookingsStore {
 		this.userId = userId;
 		this.page = page;
 
-		const result = await pb.collection(Collections.Bookings).getList(page, this.perPage, {
-			filter: `mentee = "${userId}" || slot.mentor = "${userId}"`,
-			sort: '-created',
-			expand: 'slot,slot.mentor,mentee'
-		});
+		const result = await pb
+			.collection(Collections.Bookings)
+			.getList<EnhancedBooking>(page, this.perPage, {
+				filter: `mentee = "${userId}" || slot.mentor = "${userId}"`,
+				sort: '-created',
+				expand: 'slot,slot.mentor,mentee'
+			});
 
-		this.bookings = result.items as BookingsResponse[];
+		this.bookings = result.items;
 		this.totalItems = result.totalItems;
 
 		return result;
@@ -36,10 +42,10 @@ class BookingsStore {
 	subscribe() {
 		if (!this.userId) return;
 
-		return pb.collection(Collections.Bookings).subscribe(
+		return pb.collection(Collections.Bookings).subscribe<EnhancedBooking>(
 			'*',
 			async (e) => {
-				const booking = e.record as BookingsResponse;
+				const booking = e.record;
 
 				// Re-fetch with expand if it's a create/update
 				let expandedBooking = booking;
@@ -54,7 +60,7 @@ class BookingsStore {
 						// Only add if it belongs to user
 						if (
 							expandedBooking.mentee === this.userId ||
-							(expandedBooking.expand?.slot as any)?.mentor === this.userId
+							expandedBooking.expand?.slot?.mentor === this.userId
 						) {
 							this.bookings = [expandedBooking, ...this.bookings];
 							this.totalItems += 1;

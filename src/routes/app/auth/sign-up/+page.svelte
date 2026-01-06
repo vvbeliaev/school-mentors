@@ -59,7 +59,9 @@
 </script>
 
 <div class="mx-auto mt-8 max-w-lg px-4">
-	<ThemeController />
+	<div class="sm:hidden">
+		<ThemeController />
+	</div>
 
 	<h1 class="mb-6 text-center text-3xl font-bold">Create New Account</h1>
 
@@ -151,7 +153,7 @@
 		</div>
 	</form>
 	<!-- Terms -->
-	<p class="mt-2 text-xs text-neutral">
+	<p class="mt-2 text-center text-xs text-neutral">
 		By creating an account, you agree to the
 		<a href="/legal/terms-and-conditions" class="link link-primary" target="_blank"
 			>terms and conditions</a
@@ -160,7 +162,7 @@
 		<a href="/legal/privacy-policy" class="link link-primary" target="_blank">privacy policy</a>.
 	</p>
 
-	<p class="mt-4 text-center text-sm">
+	<p class="mt-4 text-center text-xs">
 		Already have an account?
 		<a href="/app/auth/sign-in" class="link font-semibold link-secondary">Sign in!</a>
 	</p>

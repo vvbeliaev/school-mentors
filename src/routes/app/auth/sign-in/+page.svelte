@@ -41,7 +41,9 @@
 </script>
 
 <div class="mx-auto mt-8 max-w-lg px-4">
-	<ThemeController />
+	<div class="sm:hidden">
+		<ThemeController />
+	</div>
 
 	<h1 class="mb-6 text-center text-3xl font-bold">Welcome Back!</h1>
 

@@ -5,6 +5,7 @@ go 1.25.5
 require (
 	github.com/joho/godotenv v1.5.1
 	github.com/pocketbase/pocketbase v0.35.0
+	github.com/stripe/stripe-go/v84 v84.1.0
 )
 
 require (

@@ -1,37 +1,42 @@
 package bookings
 
 import (
-	"fmt"
+	"errors"
 
 	"github.com/pocketbase/pocketbase"
 	"github.com/pocketbase/pocketbase/core"
 )
 
 func Hooks(app *pocketbase.PocketBase) {
-	// Check if the slot is already booked
-	// When a booking is created -> book the slot
-	// Copy the mentor's hourly rate to the booking in case the mentor changes their rate
+	// Atomically book the slot and set booking metadata
 	app.OnRecordCreate("bookings").BindFunc(func(e *core.RecordEvent) error {
 		slotId := e.Record.GetString("slot")
-		slot, err := app.FindRecordById("slots", slotId)
-		if err != nil {
-			return fmt.Errorf("slot not found: %w", err)
-		}
 
-		if slot.GetBool("booked") {
-			return fmt.Errorf("slot is already booked: %s", slotId)
-		}
-		
-		slot.Set("booked", true)
-		if err := app.Save(slot); err != nil {
+		// Atomic UPDATE: only succeeds if slot exists AND is not yet booked
+		// This prevents race conditions (two users booking the same slot simultaneously)
+		res, err := e.App.DB().NewQuery("UPDATE slots SET booked = 1 WHERE id = {:id} AND (booked = 0 OR booked IS NULL)").
+			Bind(map[string]any{"id": slotId}).
+			Execute()
+		if err != nil {
 			return err
 		}
 
+		rows, _ := res.RowsAffected()
+		if rows == 0 {
+			return errors.New("slot is already booked or does not exist")
+		}
+
+		// Fetch slot to get mentor info for pricing
+		slot, err := e.App.FindRecordById("slots", slotId)
+		if err != nil {
+			return err
+		}
+
+		// Copy mentor's current hourly rate
 		mentorId := slot.GetString("mentor")
-		mentor, err := app.FindRecordById("users", mentorId)
+		mentor, err := e.App.FindRecordById("users", mentorId)
 		if err == nil {
-			currentRate := mentor.GetInt("hourRateCents")
-			e.Record.Set("agreedPriceCents", currentRate)
+			e.Record.Set("agreedPriceCents", mentor.GetInt("hourRateCents"))
 		}
 
 		e.Record.Set("status", "pending")
@@ -39,7 +44,7 @@ func Hooks(app *pocketbase.PocketBase) {
 		return e.Next()
 	})
 
-	// When a booking is canceled -> free the slot
+	// When a booking is canceled or expired -> free the slot
 	app.OnRecordUpdate("bookings").BindFunc(func(e *core.RecordEvent) error {
 		status := e.Record.GetString("status")
 		if status == "canceled" || status == "expired" {

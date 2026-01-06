@@ -1,6 +1,6 @@
 <script lang="ts">
 	import posthog from 'posthog-js';
-	import { Settings, Menu, PanelRight, Search, House, CalendarDays } from 'lucide-svelte';
+	import { Settings, Menu, PanelRight, Search, House, CalendarDays, LogIn } from 'lucide-svelte';
 	import { afterNavigate } from '$app/navigation';
 	import { page } from '$app/state';
 
@@ -205,10 +205,18 @@
 					<span class="dock-label">{item.label}</span>
 				</a>
 			{/each}
-			<a href="/app/profile" class:dock-active={page.url.pathname === '/app/profile'}>
-				<Settings class="size-5" />
-				<span class="dock-label">Profile</span>
-			</a>
+
+			{#if user}
+				<a href="/app/profile" class:dock-active={page.url.pathname === '/app/profile'}>
+					<Settings class="size-5" />
+					<span class="dock-label">Profile</span>
+				</a>
+			{:else}
+				<a href="/app/auth/sign-in" class:dock-active={page.url.pathname === '/app/auth/sign-in'}>
+					<LogIn class="size-5" />
+					<span class="dock-label">Log In</span>
+				</a>
+			{/if}
 
 			<!-- Hidden for now -->
 			<button class="hidden" onclick={() => uiStore.toggleRightSidebar()}>

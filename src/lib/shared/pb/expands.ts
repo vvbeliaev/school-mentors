@@ -1,13 +1,21 @@
-import type { BookingsResponse, SlotsResponse } from './pocketbase-types';
+import type { BookingsResponse, SlotsResponse, UsersResponse } from './pocketbase-types';
 
 export type UserExpand =
 	| {
-			slots_via_mentor: SlotsResponse[] | undefined;
+			slots_via_mentor: SlotsResponse<SlotExpand>[] | undefined;
 	  }
 	| undefined;
 
 export type SlotExpand =
 	| {
-			bookings_via_slot: BookingsResponse[] | undefined;
+			mentor: UsersResponse;
+			bookings_via_slot: BookingsResponse<unknown, BookingsExpand>[] | undefined;
+	  }
+	| undefined;
+
+export type BookingsExpand =
+	| {
+			slot: SlotsResponse<SlotExpand>;
+			mentee: UsersResponse;
 	  }
 	| undefined;
