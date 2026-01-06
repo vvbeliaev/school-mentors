@@ -23,36 +23,31 @@ func main() {
 	app := pocketbase.New()
 
     app.OnServe().BindFunc(func(se *core.ServeEvent) error {
-        // Serve service worker
-        se.Router.GET("/sw.js", func(e *core.RequestEvent) error {
-            fsys := os.DirFS("./pb_public")
-            e.Response.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
-            e.Response.Header().Set("Pragma", "no-cache")
-            e.Response.Header().Set("Expires", "0")
-            return e.FileFS(fsys, "sw.js")
-        })
-
-        // SPA + Prerender fallback: serve static files, check for .html, or fallback to index.html
         se.Router.GET("/{path...}", func(e *core.RequestEvent) error {
             path := e.Request.PathValue("path")
             fsys := os.DirFS("./pb_public")
 
-            // 1. Try to serve the static file as is (assets, direct matches)
+            // --- PWA treatment block ---
+            // If the request is for PWA system files - serve them with no cache
+            if path == "sw.js" || strings.HasPrefix(path, "workbox-") {
+                e.Response.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+                e.Response.Header().Set("Pragma", "no-cache")
+                e.Response.Header().Set("Expires", "0")
+                
+                // Try to serve the file. If an error occurs, a standard 404 from PocketBase will be returned,
+                // but we at least try to serve the correct file with the correct headers.
+                return e.FileFS(fsys, path)
+            }
+            // ------------------------
+
+            // 1. Try to serve a regular static file (images, css, etc.)
             err := e.FileFS(fsys, path)
             if err == nil {
                 return nil
             }
 
-            // 2. Try to serve path.html (for prerendered routes)
-            if path != "" && !strings.Contains(path, ".") {
-                htmlErr := e.FileFS(fsys, strings.TrimSuffix(path, "/")+".html")
-                if htmlErr == nil {
-                    return nil
-                }
-            }
-
-            // 3. Fallback to index.html for SPA routing, 
-            // except for API and internal PocketBase routes.
+            // 2. SPA Fallback (index.html)
+            // Ignore API and admin (_/)
             if !strings.HasPrefix(path, "api/") && !strings.HasPrefix(path, "_/") {
                 return e.FileFS(fsys, "index.html")
             }
@@ -60,7 +55,7 @@ func main() {
             return err
         })
 
-        // Register custom API routes
+        // API routes are registered separately, they have priority
         bookings.API(se, app)
 
         return se.Next()
