@@ -23,6 +23,15 @@ func main() {
 	app := pocketbase.New()
 
     app.OnServe().BindFunc(func(se *core.ServeEvent) error {
+        // Serve service worker
+        se.Router.GET("/sw.js", func(e *core.RequestEvent) error {
+            fsys := os.DirFS("./pb_public")
+            e.Response.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+            e.Response.Header().Set("Pragma", "no-cache")
+            e.Response.Header().Set("Expires", "0")
+            return e.FileFS(fsys, "sw.js")
+        })
+
         // SPA + Prerender fallback: serve static files, check for .html, or fallback to index.html
         se.Router.GET("/{path...}", func(e *core.RequestEvent) error {
             path := e.Request.PathValue("path")
