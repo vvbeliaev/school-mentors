@@ -8,10 +8,10 @@
 		text?: string;
 	}
 
-	const { size = 24, class: className = '', text = ' University Connect' }: Props = $props();
+	const { size = 24, class: className = '', text = 'Univerlink' }: Props = $props();
 </script>
 
 <div class="flex size-9 items-center justify-center rounded-xl bg-primary text-white">
 	<GraduationCap {size} />
 </div>
-<span class="font-display text-lg font-bold tracking-tight text-nowrap">{text}</span>
+<span class="font-display text-xl font-bold tracking-tight text-nowrap">{text}</span>

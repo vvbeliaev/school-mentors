@@ -82,7 +82,7 @@
 </script>
 
 <svelte:head>
-	<title>University Connect</title>
+	<title>Univerlink</title>
 	<meta
 		name="description"
 		content="Connect with top college students for personalized 1-on-1 coaching. Get the inside track from those who just did it."
@@ -362,7 +362,7 @@
 				<a href="/" class="hidden transition-opacity hover:opacity-100">Twitter</a>
 			</div>
 
-			<div class="text-sm opacity-30">© 2026 University Connect</div>
+			<div class="text-sm opacity-30">© 2026 Univerlink</div>
 		</div>
 	</footer>
 </div>
